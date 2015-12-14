@@ -1,0 +1,4 @@
+g++ -Wall traitement.cpp `pkg-config --cflags --libs opencv` -o traitement -std=c++11
+
+g++ -Wall *.cpp -I. `pkg-config --cflags --libs opencv` -o main -std=c++11 -lboost_system -lboost_filesystem
+

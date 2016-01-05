@@ -4,7 +4,7 @@
 #include <time.h>
 #include <map>
 
-update_clusters(std::map<int, int>& database_map, std::map <int, std::vector<std::complex<double>>> prototypes_map, std::vector<std::vector<std::complex<double>>> database){
+void update_clusters(std::map<int, int>& database_map, std::map <int, std::vector<std::complex<double>>> prototypes_map, std::vector<std::vector<std::complex<double>>> database){
 
 	int label = 0;
 
@@ -27,7 +27,7 @@ update_clusters(std::map<int, int>& database_map, std::map <int, std::vector<std
 
 double get_distance(std::vector<std::complex<double>> data_vector, std::vector<std::complex<double>> prototype){
 
-	std::vector<stdcomplex<double>> difference;
+  std::vector<std::complex<double>> difference;
 	int diff = 0;
 
 	for(int i =0; i<data_vector.size(); i++){
@@ -59,7 +59,7 @@ std::map <int, std::vector<std::complex<double>>> update_prototypes(int nb_proto
 }
 
 
-std::map <int, std::vector<std::complex<double>>> kmeans(std::vector<std::vector<std::complex<double>> database, int nb_clusters, double epsilon){
+std::map <int, std::vector<std::complex<double>>> kmeans(std::vector<std::vector<std::complex<double>>> database, int nb_clusters, double epsilon){
 
 	//	std::vector<std::vector<std::complex<double>>> = database;
 
@@ -67,7 +67,7 @@ std::map <int, std::vector<std::complex<double>>> kmeans(std::vector<std::vector
 	double epsilon = epsilon;
 
 	std::map <int, std::vector<std::complex<double>>> prototypes_map;
-	std::map <int, std::vector<std::complex<double>>> final_rototypes_map;
+	std::map <int, std::vector<std::complex<double>>> final_prototypes_map;
 	std::map <int, int> database_map;
 
 	srand(time(NULL));

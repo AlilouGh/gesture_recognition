@@ -5,7 +5,7 @@
 
 
 
-int main(int, char**)
+/*int main(int, char**)
 {
   /*cv::VideoCapture cap(0);                                                                                           // open the default camera
 
@@ -54,7 +54,7 @@ int main(int, char**)
       if(cv::waitKey(30) >= 0) break;
       }*/
 
-  int c_max = 10;
+/* int c_max = 10;
 
   std::map< std::string, std::vector< std::vector< std::complex<double> > > > database = fourier_descriptor_extraction(c_max);
   
@@ -67,4 +67,4 @@ int main(int, char**)
   }
   
   return 0;
-}
+}*/

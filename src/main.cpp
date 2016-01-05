@@ -1,6 +1,7 @@
 #include "traitement.hpp"
 #include "descripteur_fourier.hpp"
 #include "feature_extraction.hpp"
+#include "kmeans.hpp"
 
 
 

@@ -6,7 +6,7 @@ std::vector<std::vector<std::complex<double>>> kmeans_input (int c_max) {
 
   std::vector<std::vector<std::complex<double>>> database;  // initialisation d'un dictionnaire dont les clés sont les noms des classes et les valeurs sont l'ensemble des descripteurs de Fourier associés
 
-  std::string pathname("/usr/users/promo2016/pierrard_reg/TL/Base_de_donnees");              // chemin du répertoire à parcourir
+  std::string pathname("/home/ghezali/Documents/supelec/sir/tl_gesture_command/Base_de_donnees/test");              // chemin du répertoire à parcourir
   const boost::filesystem::path search_here (pathname);
   boost::filesystem::recursive_directory_iterator dir( search_here), end;
 

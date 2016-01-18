@@ -36,7 +36,7 @@ std::map< std::string, std::vector< std::vector< std::complex<double> > > > four
       
       contours = find_longest_contour(contours);
 
-      int c_max = 10;
+      //int c_max = 10;
       std::vector<std::complex<double>> coeff = descripteur_fourier_normal(contours, c_max);
       database_map[classe].push_back(coeff);                                                 // on ajoute les descripteurs de Fourier de l'image courante à la base de données
       }

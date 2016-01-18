@@ -8,7 +8,7 @@ void update_clusters(std::map<int, int>& database_map, std::map <int, std::vecto
 
 	for(auto& it1 : database_map){
 
-		double distance = 0.0;
+		double distance = std::numeric_limits<double>::max();
 
 		for(auto& it2 : prototypes_map){
 			double d = get_distance(database[it1.first], it2.second);
@@ -29,13 +29,8 @@ double get_distance(std::vector<std::complex<double>> data_vector, std::vector<s
 	std::complex<double> diff;
 	double distance = 0;
 
-	for(unsigned int i =0; data_vector.size(); i++){
-		std::cout << "Avant" << std::endl;
-		std::cout << data_vector[i] << std::endl;
-		std::cout << prototype[i] << std::endl;
+	for(unsigned int i =0; i < data_vector.size(); i++){
 		diff = data_vector[i] - prototype[i];
-		std::cout << "Après" << std::endl;
- 		std::this_thread::sleep_for(std::chrono::milliseconds(500));
 		//difference.push_back(diff);
 		distance += std::norm(diff);
 	}
@@ -64,7 +59,14 @@ std::map <int, std::vector<std::complex<double>>> update_prototypes(int nb_proto
 			}
 		}
 
-		std::vector<std::complex<double>> div_vector (prototypes_map[l].size(), std::complex<double>(divider));
+		std::vector<std::complex<double>> div_vector;
+
+		if (divider == 1){
+			 div_vector = std::vector<std::complex<double>>(prototypes_map[l].size(), std::complex<double>(divider));
+		}else{
+			 div_vector = std::vector<std::complex<double>>(prototypes_map[l].size(), std::complex<double>(divider-1));
+		}
+
 		std::transform(prototypes_map[l].begin(), prototypes_map[l].end(), div_vector.begin(), prototypes_map[l].begin(), std::divides<std::complex<double>>());
 
 	}
@@ -74,7 +76,8 @@ std::map <int, std::vector<std::complex<double>>> update_prototypes(int nb_proto
 
 
 std::map <int, std::vector<std::complex<double>>> kmeans(std::vector<std::vector<std::complex<double>>> database, int nb_clusters, double epsilon){
-
+	
+	std::cout << "epsilon = " << epsilon << std::endl;
 	std::cout << "taille database = " << database.size() << std::endl;
 	std::this_thread::sleep_for(std::chrono::milliseconds(500));
 	//	std::vector<std::vector<std::complex<double>>> = database;
@@ -98,8 +101,6 @@ std::map <int, std::vector<std::complex<double>>> kmeans(std::vector<std::vector
 
 	for(unsigned int i=0; i<database.size(); i++){
 		rand_label = rand() % k;
-		std::cout << rand_label << std::endl;
-		std::this_thread::sleep_for(std::chrono::milliseconds(500));
 		database_map[i] = rand_label;
 	}
 
@@ -114,7 +115,14 @@ std::map <int, std::vector<std::complex<double>>> kmeans(std::vector<std::vector
 			compt++;
 		}	
 
-		std::vector<std::complex<double>> div_vector (prototypes_map[l].size(), std::complex<double>(divider));
+		std::vector<std::complex<double>> div_vector;
+
+                if (divider == 1){
+                         div_vector = std::vector<std::complex<double>>(prototypes_map[l].size(), std::complex<double>(divider));
+                }else{
+                         div_vector = std::vector<std::complex<double>>(prototypes_map[l].size(), std::complex<double>(divider-1));
+                }
+
 		std::transform(prototypes_map[l].begin(), prototypes_map[l].end(), div_vector.begin(), prototypes_map[l].begin(), std::divides<std::complex<double>>());
 	}
 
@@ -125,17 +133,24 @@ std::map <int, std::vector<std::complex<double>>> kmeans(std::vector<std::vector
 
 	double distance = 0;
 	for (int i=0; i<k ; i++){
-		std::cout << "prototype " << i+1 << std::endl;
 		distance += get_distance(final_prototypes_map[i], prototypes_map[i]);
 	}
 
 	int compteur = 1;
-	while(distance > epsilon){
+	std::cout << "loop 0 : " << distance << std::endl; 
+	
+	double last_distance = 100;
 
-		std::this_thread::sleep_for(std::chrono::milliseconds(5000));
-		std::cout << "compteur = " << compteur << std::endl;
+	while(std::abs(last_distance - distance) > epsilon){
+		
+		std::cout << "loop" << compteur << " : " << distance << std::endl; 
+		
+		last_distance = distance;
+
+		distance = 0;
 
 		update_clusters(database_map, prototypes_map, database);
+
 		prototypes_map =  update_prototypes(k, database, database_map);
 
 		for (int i = 0; i < nb_clusters; i++){
@@ -145,6 +160,8 @@ std::map <int, std::vector<std::complex<double>>> kmeans(std::vector<std::vector
 		final_prototypes_map = prototypes_map;
 		compteur++;
 	}
+	
+	std::cout << "last loop : " << distance-last_distance << " < " << epsilon << std::endl; 
 
 	return final_prototypes_map;
 

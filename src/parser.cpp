@@ -48,8 +48,9 @@ std::map< std::string, std::vector< std::vector< std::complex<double> > > > pars
   return database;
 }
 
-
+/*
 int main() {
   parser("database.txt");
   return 0;
 }
+*/

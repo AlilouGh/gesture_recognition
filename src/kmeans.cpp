@@ -4,6 +4,7 @@
 #include "descripteur_fourier.hpp"
 #include "traitement.hpp"
 #include "feature_extraction.hpp"
+#include "parser.hpp"
 
 void update_clusters(std::map<int, int>& database_map, std::map <int, std::vector<std::complex<double>>> prototypes_map, std::vector<std::vector<std::complex<double>>> database){
 
@@ -98,27 +99,12 @@ std::map <int, std::vector<std::complex<double>>> kmeans(std::vector<std::vector
 	std::vector < std::vector< cv::Point > > contours;
 
 	int c_max = 10;
+	std::map< std::string, std::vector< std::vector< std::complex<double> > > > init_map = parser("databases/kmeans_init.txt");
 
 	std::vector < std::vector<std::complex<double> > > vect_coeff;
-
-	frame = cv::imread("/home/ghezali/Documents/supelec/sir/tl_gesture_command/database/2016-01-27-150243_12.jpg");
-	vect_frames.push_back(frame);
-
-	frame = cv::imread("/home/ghezali/Documents/supelec/sir/tl_gesture_command/database/2016-01-27-150430_8.jpg");
-	vect_frames.push_back(frame);
-
-	frame = cv::imread("/home/ghezali/Documents/supelec/sir/tl_gesture_command/database/2016-01-27-150649_4.jpg");
-	vect_frames.push_back(frame);
-
-	frame = cv::imread("/home/ghezali/Documents/supelec/sir/tl_gesture_command/database/2016-01-27-150833_14.jpg");
-	vect_frames.push_back(frame);
-
-	for (auto& it : vect_frames){
-		segmentation(it);
-		cv::cvtColor(it, frame_conv, CV_RGB2GRAY);
-		cv::findContours(frame_conv, contours, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_NONE);
-		contours = find_longest_contour(contours);
-		vect_coeff.push_back(descripteur_fourier_normal(contours, c_max));
+	
+	for(auto& it : init_map){
+		vect_coeff.push_back(it.second[0]);
 	}
 
 	for(unsigned int k = 0; k < vect_coeff.size(); k++){
